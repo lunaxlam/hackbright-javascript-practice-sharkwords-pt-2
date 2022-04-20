@@ -79,6 +79,18 @@ const handleCorrectGuess = (letter) => {
     matchingLetter.innerHTML = `${letter}`
   };
 
+  // // Another method to check correct guesses
+  // for (const matchingLetter of document.querySelectorAll(`div.${letter}`)) {
+  //   matchingLetter.innerHTML = `${letter}`
+  //   correctGuesses += 1
+  // };
+
+  // if (correctGuesses===word.length) {
+  //   // Note: Will need to pass in 'word' in the handleCorrectGuess parameter
+  //   disableAllLetterButtons();
+  //   document.querySelector('#win').style.display = '';
+  // }
+
 };
 
 
@@ -91,7 +103,7 @@ const handleWrongGuess = () => {
   numWrong += 1;
 
   // Get the current shark image
-  const sharkImage = document.querySelector('img');
+  const sharkImage = document.querySelector('#shark-img img');
 
   // Update the shark image based on numWrong
   sharkImage.setAttribute('src', `/static/images/guess${numWrong}.png`);
