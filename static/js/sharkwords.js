@@ -1,4 +1,5 @@
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
+
 const WORDS = [
   'strawberry',
   'orange',
@@ -16,59 +17,104 @@ const WORDS = [
 
 let numWrong = 0;
 
-// Loop over the chars in `word` and create divs.
-//
 
 const createDivsForChars = (word) => {
+  // Loop over the chars in `word` and create divs.
+  //
+
+  // Get the section of the DOM object with the id=word-container
   const wordContainer = document.querySelector('#word-container');
+
+  // Iterate through each letter of the given word to do the following
   for (const letter of word) {
+
+    // Insert an adjacent HTML element that is a div element at the position right before the end of the section 
+    // and assign the following class attributes
     wordContainer.insertAdjacentHTML('beforeend', `<div class="letter-box ${letter}"></div>`);
   }
 };
 
-// Loop over each letter in `ALPHABET` and generate buttons.
-//
+
 const generateLetterButtons = () => {
+  // Loop over each letter in `ALPHABET` and generate buttons.
+  //
+
+  // Get the section of the DOM object with the id=letter-buttons
   const letterButtonContainer = document.querySelector('#letter-buttons');
+
+  // Iterate through each char of the ALPHABET and do the following
   for (const char of ALPHABET) {
+
+    // Insert an adjacent HTML element that is a button element at the position right before the end of the section
+    // and assign the following innerHTMLText
     letterButtonContainer.insertAdjacentHTML('beforeend', `<button>${char}</button>`);
   }
 };
 
-// Set the `disabled` property of `buttonEl` to `true.
-//
-// `buttonEl` is an `HTMLElement` object.
-//
+
 const disableLetterButton = (buttonEl) => {
+  // Set the `disabled` property of `buttonEl` to `true.
+  //
+  // `buttonEl` is an `HTMLElement` object.
+  //
+
   buttonEl.disabled = true;
 };
 
+
 // Return `true` if `letter` is in the word.
-//
+// If the letter exists as a div element with the class value then the statement will evaluate as true and therefore not 'null'
 const isLetterInWord = (letter) => document.querySelector(`div.${letter}`) !== null;
 
-// Called when `letter` is in word. Update contents of divs with `letter`.
-//
-const handleCorrectGuess = (letter) => {
-  // Replace this with your code
-};
+// // Alternatively, can access with just `.${letter}`
+// const isLetterInWord = (letter) => document.querySelector(`.${letter}`) !== null;
 
-//
-// Called when `letter` is not in word.
-//
-// Increment `numWrong` and update the shark image.
-// If the shark gets the person (5 wrong guesses), disable
-// all buttons and show the "play again" message.
+
+
+const handleCorrectGuess = (letter) => {
+  // Called when `letter` is in word. 
+  // Update innerHTMLText of divs with `letter`.
+ 
+  for (const matchingLetter of document.querySelectorAll(`div.${letter}`)) {
+    matchingLetter.innerHTML = `${letter}`};
+  }
+
+
 
 const handleWrongGuess = () => {
+  //
+  // Called when `letter` is not in word.source
+  //
+
+  // Increment `numWrong` and update the shark image.
   numWrong += 1;
-  // Replace this with your code
+
+  // Get the current shark image
+  const sharkImage = document.querySelector('img');
+
+  // Change the image attribute 
+  sharkImage.setAttribute('src', `/static/images/guess${numWrong}.png`);
+
+  
+  // If the shark gets the person (5 wrong guesses), disable
+  // all buttons and show the "play again" message.
+  if (numWrong === 5) {
+    for (const button of document.querySelectorAll('button')) {
+      disableLetterButton(button);
+    }
+
+    // Show the hidden a element with id=play-again by changing the style.display
+    document.querySelector('#play-again').style.display = '';
+  }
+
 };
+
 
 //  Reset game state. Called before restarting the game.
 const resetGame = () => {
   window.location = '/sharkwords';
 };
+
 
 // This is like if __name__ == '__main__' in Python
 //
@@ -79,11 +125,29 @@ const resetGame = () => {
   createDivsForChars(word);
   generateLetterButtons();
 
+
   for (const button of document.querySelectorAll('button')) {
     // add an event handler to handle clicking on a letter button
-    // YOUR CODE HERE
-  }
+    button.addEventListener('click', () => {
+
+      // Disable button so letter cannot be clicked on again
+      disableLetterButton(button);
+
+      // Check if the currently clicked letter is in the word
+      if (document.querySelector(`div.${button.innerHTML}`)) {
+         // If yes then call handleCorrectGuess
+         handleCorrectGuess(button.innerHTML);
+      }
+      else {
+        // If no then call handleWrongGuess
+        handleWrongGuess();
+      }
+    } 
+    );
+  };
 
   // add an event handler to handle clicking on the Play Again button
-  // YOUR CODE HERE
+  button = document.querySelector('#play-again');
+
+  button.addEventListener('click', () => resetGame());
 })();
