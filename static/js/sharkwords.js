@@ -140,7 +140,7 @@ const resetGame = () => {
       // Check if the currently clicked letter is in the word
       if (isLetterInWord(button.innerHTML)) {
          // If yes then call handleCorrectGuess
-        handleCorrectGuess(button.innerHTML, word);
+        handleCorrectGuess(button.innerHTML);
 
         // Add the letter to winningLetters
         // Compare the size of the Set(winning Letters)
