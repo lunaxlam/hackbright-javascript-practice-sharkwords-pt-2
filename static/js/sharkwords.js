@@ -19,7 +19,7 @@ let numWrong = 0;
 
 
 const createDivsForChars = (word) => {
-  // Loop over the chars in `word` and create divs.
+  // Loop over the chars in `word` and create divs for each char.
   //
 
   // Get the section of the DOM object with the id=word-container
@@ -71,7 +71,6 @@ const isLetterInWord = (letter) => document.querySelector(`div.${letter}`) !== n
 // const isLetterInWord = (letter) => document.querySelector(`.${letter}`) !== null;
 
 
-
 const handleCorrectGuess = (letter) => {
   // Called when `letter` is in word. 
   // Update innerHTMLText of divs with `letter`.
@@ -81,7 +80,6 @@ const handleCorrectGuess = (letter) => {
   };
 
 };
-
 
 
 const handleWrongGuess = () => {
@@ -139,8 +137,10 @@ const resetGame = () => {
       // Disable button so letter cannot be clicked on again
       disableLetterButton(button);
 
+      isLetterInWord
+
       // Check if the currently clicked letter is in the word
-      if (document.querySelector(`div.${button.innerHTML}`)) {
+      if (isLetterInWord(button.innerHTML)) {
          // If yes then call handleCorrectGuess
         handleCorrectGuess(button.innerHTML, word);
 
