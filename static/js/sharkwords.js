@@ -29,7 +29,7 @@ const createDivsForChars = (word) => {
   for (const letter of word) {
 
     // Insert an adjacent HTML element that is a div element at the position right before the end of the section 
-    // and assign the following class attributes
+    // and assign the following class attributes. Note: section is an inline element. 
     wordContainer.insertAdjacentHTML('beforeend', `<div class="letter-box ${letter}"></div>`);
   }
 };
@@ -58,6 +58,7 @@ const disableLetterButton = (buttonEl) => {
   // `buttonEl` is an `HTMLElement` object.
   //
 
+  // HTMLSelectElement.disabled is a boolean value; if disabled, the element will no longer accept clicks. 
   buttonEl.disabled = true;
 };
 
@@ -76,8 +77,10 @@ const handleCorrectGuess = (letter) => {
   // Update innerHTMLText of divs with `letter`.
  
   for (const matchingLetter of document.querySelectorAll(`div.${letter}`)) {
-    matchingLetter.innerHTML = `${letter}`};
-  }
+    matchingLetter.innerHTML = `${letter}`
+  };
+
+};
 
 
 
@@ -92,7 +95,7 @@ const handleWrongGuess = () => {
   // Get the current shark image
   const sharkImage = document.querySelector('img');
 
-  // Change the image attribute 
+  // Update the shark image based on numWrong
   sharkImage.setAttribute('src', `/static/images/guess${numWrong}.png`);
 
   
@@ -125,8 +128,11 @@ const resetGame = () => {
   createDivsForChars(word);
   generateLetterButtons();
 
+  const winningLetters = new Set();
+  const setWord = new Set(word);
 
   for (const button of document.querySelectorAll('button')) {
+
     // add an event handler to handle clicking on a letter button
     button.addEventListener('click', () => {
 
@@ -136,18 +142,36 @@ const resetGame = () => {
       // Check if the currently clicked letter is in the word
       if (document.querySelector(`div.${button.innerHTML}`)) {
          // If yes then call handleCorrectGuess
-         handleCorrectGuess(button.innerHTML);
+        handleCorrectGuess(button.innerHTML, word);
+
+        // Add the letter to winningLetters
+        // Compare the size of the Set(winning Letters)
+        // with the Set(word) to check if all letters have been guessed
+        if (setWord.has(`${button.innerHTML}`)) {
+          winningLetters.add(`${button.innerHTML}`);
+        };
+
+        // Display the congratulatory message if won
+        if (setWord.size === winningLetters.size) {
+          document.querySelector('#win').style.display = '';
+        };
+         
       }
       else {
         // If no then call handleWrongGuess
         handleWrongGuess();
       }
+
     } 
     );
   };
 
-  // add an event handler to handle clicking on the Play Again button
-  button = document.querySelector('#play-again');
 
+  // add an event handler to handle clicking on the Play Again button
+  button = document.querySelector('#play-again'); 
+  button.addEventListener('click', () => resetGame());
+
+  // add an event handler to handle clicking on the Play Again button
+  button = document.querySelector('#win');
   button.addEventListener('click', () => resetGame());
 })();
