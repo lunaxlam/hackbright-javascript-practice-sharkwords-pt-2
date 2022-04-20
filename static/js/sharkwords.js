@@ -137,8 +137,6 @@ const resetGame = () => {
       // Disable button so letter cannot be clicked on again
       disableLetterButton(button);
 
-      isLetterInWord
-
       // Check if the currently clicked letter is in the word
       if (isLetterInWord(button.innerHTML)) {
          // If yes then call handleCorrectGuess
